@@ -1,5 +1,5 @@
 from libs.Helper import get_exif, read_config, contype
-from libs.ImageProcessing import resize_aspectratio_width_height, default_image
+from libs.ImageProcessing import resize_aspectratio_width_height, default_image, width_only,height_only
 import cv2
 
 def thumbnail(imgnumpy,imgpillow,ext,name,w,h,a,q):
@@ -10,8 +10,14 @@ def thumbnail(imgnumpy,imgpillow,ext,name,w,h,a,q):
     else:
         width, height = imgpillow.size
 
+    convertopil = default_image(imgpillow)
+
     if not w and not h and not a:
-        image = default_image(imgpillow)
+        image = convertopil
+    elif w is not None and h is None:
+        image = width_only(convertopil,w,width,height)
+    elif h is not None and w is None:
+        image = height_only(convertopil,h,width,height)
 
     if ext == ".jpg" or ext == ".jpeg":
         if q is not None:

@@ -17,6 +17,20 @@ def default_image(img):
 
     return imgdefault
 
+def height_only(img,h,width,height):
+    roih = float(h)
+    heightScale = roih / float(height)
+    newX, newY = float(width) * float(heightScale), float(height) * float(heightScale)
+    cropped_img = cv2.resize(img, (int(newX), int(newY)))
+    return cropped_img
+
+def width_only(img,w,width,height):
+    roiw = float(w)
+    widthScale = roiw / float(width)
+    newX, newY = float(width) * float(widthScale), float(height) * float(widthScale)
+    cropped_img = cv2.resize(img, (int(newX), int(newY)))
+    return cropped_img
+
 def resize_aspectratio_width_height(img, height, width, reqh, reqw):
     oriaspect = float(width) / float(height)
     reqaspect = float(reqw) / float(reqh)
