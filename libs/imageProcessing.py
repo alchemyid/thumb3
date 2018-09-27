@@ -5,7 +5,6 @@ import numpy as np
 
 def default_image(img):
     pilimg = img
-
     if img.mode == "RGBA":  # for transparent image
         background_color = (255, 255, 255, 0)
         pilc = pilimg.convert("RGBA")
@@ -91,7 +90,7 @@ def resize_aspectratio_width_height_a(img, height, width, h, w, a):
     pil_im = Image.fromarray(dataprocess)
     data = dataprocess
 
-    if a == "top":
+    if a == "t":
         top = pil_im.crop(
             (
                 0,
@@ -103,7 +102,7 @@ def resize_aspectratio_width_height_a(img, height, width, h, w, a):
 
         data = cv2.cvtColor(np.array(top), cv2.COLOR_RGB2BGR)
 
-    if a == "bottom":
+    if a == "b":
         bottom = pil_im.crop(
             (
                 0,
@@ -114,7 +113,7 @@ def resize_aspectratio_width_height_a(img, height, width, h, w, a):
         )
         data = cv2.cvtColor(np.array(bottom), cv2.COLOR_RGB2BGR)
 
-    if a == "left":
+    if a == "l":
         left = pil_im.crop(
             (
                 0,
@@ -124,7 +123,7 @@ def resize_aspectratio_width_height_a(img, height, width, h, w, a):
             )
         )
         data = cv2.cvtColor(np.array(left), cv2.COLOR_RGB2BGR)
-    if a == "right":
+    if a == "r":
         right = pil_im.crop(
             (
                 int(newX) - int(w),
