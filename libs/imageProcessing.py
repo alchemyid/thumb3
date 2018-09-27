@@ -1,35 +1,23 @@
-import urllib
-import requests
-import numpy as np
 import cv2
-from hashlib import md5
+from libs.Helper import flat
 from PIL import Image
-from datetime import datetime, timedelta
-from libs.globalFunctions import flat
+import numpy as np
 
+def default_image(img):
+    pilimg = img
 
-def strtodm5(s, encoding='utf-8'):
-    return md5(s.encode(encoding)).hexdigest()
+    if img.mode == "RGBA":  # for transparent image
+        background_color = (255, 255, 255, 0)
+        pilc = pilimg.convert("RGBA")
+        canvas = Image.new('RGBA', pilc.size, background_color)
+        canvas.paste(pilc, pilc)
+        imgdefault = cv2.cvtColor(np.array(canvas), cv2.COLOR_RGBA2BGRA)
+    else:
+        imgdefault = cv2.cvtColor(np.array(pilimg), cv2.COLOR_RGB2BGR)
 
-def contype(name):
-    ext = name.split(".")[-1]
-    type = {"jpg": "image/jpeg",
-                 "png": "image/png",
-                 "gif": "image/gif",
-                 "ico": "image/x-icon"}
+    return imgdefault
 
-
-    expires = datetime.utcnow() + timedelta(days=(1))
-    expires = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
-    #    web.header("Expires", expires)
-    #    web.header("Cache-Control", "public, max-age=86400")
-    #    web.header("Accept-Ranges", "bytes")
-    #    web.header("Content-Type", self.type[self.ext])
-
-    return expires, type[ext]
-
-
-def resize_aspectratio_width_height(img, height, width, reqh, reqw, ext):
+def resize_aspectratio_width_height(img, height, width, reqh, reqw):
     oriaspect = float(width) / float(height)
     reqaspect = float(reqw) / float(reqh)
 
@@ -72,34 +60,66 @@ def resize_aspectratio_width_height(img, height, width, reqh, reqw, ext):
 
     return cropped_img
 
-class imageProcess(object):
-    def getImage(self,url):
-        #imgNumpy
-        urlFilter = urllib.parse.quote(url, ':/')
-        img = urllib.request.Request(urlFilter)
-        img.add_header('User-Agent','Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36')
-        resp = urllib.request.urlopen(img)
-        imgNumpy = np.asarray(bytearray(resp.read()), dtype="uint8")
+def resize_aspectratio_width_height_a(img, height, width, h, w, a):
+    tocv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
 
-        #imgPillow
-        imgPillow = Image.open(requests.get(urlFilter, stream=True).raw)
+    if float(w) > float(h):
+        roiw = float(w)
+        widthScale = roiw / float(width)
+        newX, newY = float(width) * float(widthScale), float(height) * float(widthScale)
+    else:
+        roiw = float(h)
+        widthScale = roiw / float(height)
+        newX, newY = float(width) * float(widthScale), float(height) * float(widthScale)
 
-        #getextention
-        ext = requests.head(urlFilter).headers
-        extget = ext.get('Content-Type').split("/")[-1]
-        type = {"jpeg": ".jpg",
-                "png": ".png",
-                "gif": ".gif",
-                "x-icon": ".ico"}
+    dataprocess = cv2.resize(tocv, (int(newX), int(newY)))
+    dataprocess = cv2.cvtColor(dataprocess, cv2.COLOR_BGR2RGB)
+    pil_im = Image.fromarray(dataprocess)
+    data = dataprocess
 
-        #generate name
-        name = strtodm5(url, encoding='utf-8') + type[extget]
-        return imgNumpy,imgPillow,type[extget],name
+    if a == "top":
+        top = pil_im.crop(
+            (
+                0,
+                0,
+                newX,
+                int(h)
+            )
+        )
 
-    def thumbnail(self,imgNumpy,imgPillow,ext,name,w,h,a,q):
-        width, height = imgPillow.size
+        data = cv2.cvtColor(np.array(top), cv2.COLOR_RGB2BGR)
 
-        image = resize_aspectratio_width_height(imgPillow,height,width,h,w,ext)
-        flag, buf = cv2.imencode(ext, image,[int(cv2.IMWRITE_JPEG_QUALITY), 80])
-        exp, ctype = contype(name)
-        return buf.tostring(),exp,ctype
+    if a == "bottom":
+        bottom = pil_im.crop(
+            (
+                0,
+                int(newY) - int(h),
+                newX,
+                newY
+            )
+        )
+        data = cv2.cvtColor(np.array(bottom), cv2.COLOR_RGB2BGR)
+
+    if a == "left":
+        left = pil_im.crop(
+            (
+                0,
+                0,
+                int(w),
+                int(newY)
+            )
+        )
+        data = cv2.cvtColor(np.array(left), cv2.COLOR_RGB2BGR)
+    if a == "right":
+        right = pil_im.crop(
+            (
+                int(newX) - int(w),
+                0,
+                newX,
+                newY
+            )
+        )
+
+        data = cv2.cvtColor(np.array(right), cv2.COLOR_RGB2BGR)
+
+    return data

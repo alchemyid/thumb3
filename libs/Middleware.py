@@ -4,8 +4,6 @@ from urllib.parse import urlparse
 class AuthMiddleware(object):
 
     def process_resource(self, req, resp, resource, params):
-
-
         aclDomain = [
             'cdn.netcj.co.id'
         ]

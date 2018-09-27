@@ -1,9 +1,9 @@
 import falcon
 import json
 from libs.Middleware import AuthMiddleware
-from libs.imageProcessing import imageProcess
+from libs.GetImages import getimage
+from libs.Thumbnail import thumbnail
 
-img = imageProcess()
 class index(object):
     def on_get(self, req, resp):
         url = req.get_param('url')
@@ -19,12 +19,13 @@ class index(object):
             resp.status = falcon.HTTP_200
             resp.body = json.dumps(data, sort_keys=True, indent=2, separators=(',', ': '))
         else:
-            imgNumpy,imgPillow,ext,name = img.getImage(url)
-            buf,exp,ext = img.thumbnail(imgNumpy,imgPillow,ext,name,w,h,a,q)
+
+            imgnumpy,imgpillow,ext,name = getimage(url)
+            buf,exp,ext = thumbnail(imgnumpy,imgpillow,ext,name,w,h,a,q)
             resp.status = falcon.HTTP_200
             resp.content_type = ext
-            resp.set_header("Expires", exp)
-            resp.set_header("Cache-Control", "public, max-age=86400")
+            #resp.set_header("Expires", exp)
+            #resp.set_header("Cache-Control", "public, max-age=86400")
             resp.body = buf
 
 app = falcon.API(middleware=[AuthMiddleware()])
