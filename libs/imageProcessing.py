@@ -136,3 +136,55 @@ def resize_aspectratio_width_height_a(img, height, width, h, w, a):
         data = cv2.cvtColor(np.array(right), cv2.COLOR_RGB2BGR)
 
     return data
+
+def crop_width_height(imgpil,position,height,width,h,w):
+    crop = imgpil
+
+    if position == "top-left":
+        crop = imgpil.crop((0, 0, int(w), int(h)))
+
+    if position == "top-right":
+        crop = imgpil.crop(
+            (
+                width - int(w),
+                0,
+                width,
+                int(h)
+            )
+        )
+
+    if position == "bottom-right":
+        crop = imgpil.crop(
+            (
+                width - int(w),
+                height - int(h),
+                width,
+                height
+            )
+        )
+
+    if position == "bottom-left":
+        crop = imgpil.crop(
+            (
+                0,
+                height - int(h),
+                width - int(w),
+                height
+            )
+        )
+
+    if position == "center":
+        half_the_width = width / 2
+        half_the_height = height / 2
+
+        crop = imgpil.crop(
+            (
+                half_the_width - int(w),
+                half_the_height - int(h),
+                half_the_width + int(w),
+                half_the_height + int(h)
+            )
+        )
+
+    cropped_img = cv2.cvtColor(np.array(crop), cv2.COLOR_RGB2BGR)
+    return cropped_img
