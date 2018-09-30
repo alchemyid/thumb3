@@ -183,3 +183,7 @@ def crop_width_height(imgpil,position,height,width,h,w):
 
     cropped_img = cv2.cvtColor(np.array(crop), cv2.COLOR_RGB2BGR)
     return cropped_img
+
+def flipimage(image):
+    flip = cv2.flip(image, 1)
+    return flip

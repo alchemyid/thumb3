@@ -3,7 +3,6 @@ import cv2
 from hashlib import md5
 from datetime import datetime, timedelta
 from PIL import Image
-import numpy as np
 from PIL.ExifTags import TAGS
 
 def flat(*nums):
@@ -64,3 +63,20 @@ def get_exif(fn):
         pass
 
     return None, None
+
+def getbuffer(ext,image,q):
+
+    if ext == ".jpg" or ext == ".jpeg":
+        if q is not None:
+            _, buf = cv2.imencode(ext, image, [int(cv2.IMWRITE_JPEG_QUALITY), int(q)])
+        else:
+            _, buf = cv2.imencode(ext, image,[int(cv2.IMWRITE_JPEG_QUALITY), read_config('config','Default_Qjpg')])
+    elif ext == ".png":
+        if q is not None:
+            _, buf = cv2.imencode(ext, image, [int(cv2.IMWRITE_PNG_COMPRESSION), int(q)])
+        else:
+            _, buf = cv2.imencode(ext, image, [int(cv2.IMWRITE_PNG_COMPRESSION), read_config('config','Default_Cpng')])
+    else:
+        _, buf = cv2.imencode(ext, image)
+
+    return buf

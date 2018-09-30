@@ -1,6 +1,5 @@
-from libs.Helper import get_exif, read_config, contype
-from libs.ImageProcessing import default_image,crop_width_height
-import cv2
+from libs.Helper import get_exif, contype, getbuffer
+from libs.ImageProcessing import crop_width_height
 
 def crop(imgnumpy,imgpillow,ext,name,w,h,c,q):
     exif, imgrotate = get_exif(imgpillow)
@@ -12,10 +11,6 @@ def crop(imgnumpy,imgpillow,ext,name,w,h,c,q):
 
     image = crop_width_height(imgpillow,c,height,width,h,w)
 
-    if q is not None:
-        _, buf = cv2.imencode(ext, image, [int(cv2.IMWRITE_JPEG_QUALITY), int(q)])
-    else:
-        _, buf = cv2.imencode(ext, image,[int(cv2.IMWRITE_JPEG_QUALITY), read_config('config','Default_Qjpg')])
-
+    buf = getbuffer(ext, image, q)
     expire, ctype = contype(name)
     return buf.tostring(), expire, ctype

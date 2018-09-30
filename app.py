@@ -4,7 +4,7 @@ from libs.Middleware import AuthMiddleware
 from libs.GetImages import getimage
 from libs.Thumbnail import thumbnail
 from libs.Crop import crop
-
+from libs.Flip import flip
 
 class index(object):
     def on_get(self, req, resp):
@@ -14,6 +14,7 @@ class index(object):
         a = req.get_param('a')
         q = req.get_param('q')
         c = req.get_param('c')
+        f = req.get_param('f')
         if url is None:
             data = {'status': 204,
                     'author': '@newbiemember',
@@ -28,6 +29,9 @@ class index(object):
             if c is not None:
                 #crop
                 buf,exp,ext = crop(imgnumpy,imgpillow,ext,name,w,h,c,q)
+            elif f is not None:
+                #flip
+                buf,exp,ext = flip(imgnumpy,imgpillow,ext,name,w,h,f,q)
             else:
                 #thumbnail
                 buf, exp, ext = thumbnail(imgnumpy, imgpillow,ext,name,w,h,a,q)
