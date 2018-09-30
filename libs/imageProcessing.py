@@ -140,10 +140,10 @@ def resize_aspectratio_width_height_a(img, height, width, h, w, a):
 def crop_width_height(imgpil,position,height,width,h,w):
     crop = imgpil
 
-    if position == "top-left":
+    if position == "tl":
         crop = imgpil.crop((0, 0, int(w), int(h)))
 
-    if position == "top-right":
+    if position == "tr":
         crop = imgpil.crop(
             (
                 width - int(w),
@@ -153,7 +153,7 @@ def crop_width_height(imgpil,position,height,width,h,w):
             )
         )
 
-    if position == "bottom-right":
+    if position == "br":
         crop = imgpil.crop(
             (
                 width - int(w),
@@ -163,28 +163,23 @@ def crop_width_height(imgpil,position,height,width,h,w):
             )
         )
 
-    if position == "bottom-left":
+    if position == "bl":
         crop = imgpil.crop(
             (
                 0,
                 height - int(h),
-                width - int(w),
+                int(w),
                 height
             )
         )
 
     if position == "center":
-        half_the_width = width / 2
-        half_the_height = height / 2
+        left = (width - int(w)) / 2
+        top = (height - int(h)) / 2
+        right = (width + int(w)) / 2
+        bottom = (height + int(h)) / 2
+        crop = imgpil.crop((left,top,right,bottom))
 
-        crop = imgpil.crop(
-            (
-                half_the_width - int(w),
-                half_the_height - int(h),
-                half_the_width + int(w),
-                half_the_height + int(h)
-            )
-        )
 
     cropped_img = cv2.cvtColor(np.array(crop), cv2.COLOR_RGB2BGR)
     return cropped_img

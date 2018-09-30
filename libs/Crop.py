@@ -1,11 +1,6 @@
 from libs.Helper import get_exif, read_config, contype
 from libs.ImageProcessing import default_image,crop_width_height
 import cv2
-import base64
-from io import BytesIO
-from PIL import Image
-import numpy as np
-
 
 def crop(imgnumpy,imgpillow,ext,name,w,h,c,q):
     exif, imgrotate = get_exif(imgpillow)

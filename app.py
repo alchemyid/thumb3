@@ -5,6 +5,7 @@ from libs.GetImages import getimage
 from libs.Thumbnail import thumbnail
 from libs.Crop import crop
 
+
 class index(object):
     def on_get(self, req, resp):
         url = req.get_param('url')
@@ -21,14 +22,15 @@ class index(object):
             resp.status = falcon.HTTP_200
             resp.body = json.dumps(data, sort_keys=True, indent=2, separators=(',', ': '))
         else:
-
-            #thumbnail
+            #default get image to numpy and pillow
             imgnumpy,imgpillow,ext,name = getimage(url)
-            buf,exp,ext = thumbnail(imgnumpy,imgpillow,ext,name,w,h,a,q)
 
-            #crop
             if c is not None:
+                #crop
                 buf,exp,ext = crop(imgnumpy,imgpillow,ext,name,w,h,c,q)
+            else:
+                #thumbnail
+                buf, exp, ext = thumbnail(imgnumpy, imgpillow,ext,name,w,h,a,q)
 
             resp.status = falcon.HTTP_200
             resp.content_type = ext
