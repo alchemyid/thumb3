@@ -187,3 +187,10 @@ def crop_width_height(imgpil,position,height,width,h,w):
 def flipimage(image):
     flip = cv2.flip(image, 1)
     return flip
+
+def rotateimage(image,r):
+    (h, w) = image.shape[:2]
+    center = (w / 2, h / 2)
+    M = cv2.getRotationMatrix2D(center, int(r), 1.0)
+    rotated = cv2.warpAffine(image, M, (w, h))
+    return rotated
