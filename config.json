@@ -2,6 +2,10 @@
   "config": {
     "default_max_width":1366,
     "Default_Qjpg":70,
-    "Default_Cpng":8
+    "Default_Cpng":8,
+    "Overlay_Image":"https://raw.githubusercontent.com/girirahayu/portofolio/master/overlay.png",
+    "Overlay_Image_Width":100,
+    "Overlay_Image_Height":100,
+    "Overlay_Text":"www.girirahayu.id"
   }
 }

@@ -2,6 +2,7 @@ import cv2
 from libs.Helper import flat
 from PIL import Image
 import numpy as np
+from libs.Helper import read_config
 
 def default_image(img):
     pilimg = img
@@ -194,3 +195,35 @@ def rotateimage(image,r):
     M = cv2.getRotationMatrix2D(center, int(r), 1.0)
     rotated = cv2.warpAffine(image, M, (w, h))
     return rotated
+
+def overlayimage(signature,convertopil,o):
+
+    wH, wW = signature.shape[:2]
+    m, n = convertopil.shape[:2]
+
+    (B, G, R, A) = cv2.split(signature)
+    B = cv2.bitwise_and(B, B, mask=A)
+    G = cv2.bitwise_and(G, G, mask=A)
+    R = cv2.bitwise_and(R, R, mask=A)
+    signature = cv2.merge([B, G, R, A])
+
+    src = np.dstack([convertopil, np.ones((m, n), dtype="uint8") * 255])
+    imgoverlay = np.zeros((m, n, 4), dtype="uint8")
+    imgoverlay[m - wH - 10:m - 10, n - wW - 10:n - 10] = signature
+
+    if o == "true":
+        watermarked = src.copy()
+        cv2.addWeighted(imgoverlay, 0.4, watermarked, 1.0, 0, watermarked)
+        cv2.putText(watermarked, read_config('config','Overlay_Text'), (10, m - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=0.5,
+                    color=[255,255,255], thickness=1)
+    elif o == "image":
+        watermarked = src.copy()
+        cv2.addWeighted(imgoverlay, 0.4, watermarked, 1.0, 0, watermarked)
+    else:
+        watermarked = src
+        cv2.putText(watermarked, read_config('config','Overlay_Text'), (10, m - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=0.5,
+                    color=[255,255,255], thickness=1)
+
+    return watermarked

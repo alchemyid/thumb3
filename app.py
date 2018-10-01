@@ -6,6 +6,7 @@ from libs.Thumbnail import thumbnail
 from libs.Crop import crop
 from libs.Flip import flip
 from libs.Rotate import rotate
+from libs.Overlay import overlay
 
 class index(object):
     def on_get(self, req, resp):
@@ -17,6 +18,7 @@ class index(object):
         c = req.get_param('c')
         f = req.get_param('f')
         r = req.get_param('r')
+        o = req.get_param('o')
         if url is None:
             data = {'status': 204,
                     'author': '@newbiemember',
@@ -35,8 +37,11 @@ class index(object):
                 #flip
                 buf,exp,ext = flip(imgnumpy,imgpillow,ext,name,w,h,f,q)
             elif r is not None:
-
+                #rotate
                 buf, exp, ext = rotate(imgnumpy,imgpillow,ext,name,w,h,r,q)
+            elif o is not None:
+                #overlay
+                buf, exp, ext = overlay(imgnumpy, imgpillow, ext, name, w, h, o, q)
             else:
                 #thumbnail
                 buf, exp, ext = thumbnail(imgnumpy, imgpillow,ext,name,w,h,a,q)
