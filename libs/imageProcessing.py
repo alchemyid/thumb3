@@ -227,3 +227,66 @@ def overlayimage(signature,convertopil,o):
                     color=[255,255,255], thickness=1)
 
     return watermarked
+
+def facecrop_debug(face_cascade,eye_cascade,img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30),
+                                          flags=cv2.CASCADE_SCALE_IMAGE)
+    for (x, y, w, h) in faces:
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        roi_gray = gray[y:y + h, x:x + w]
+        roi_color = img[y:y + h, x:x + w]
+        eyes = eye_cascade.detectMultiScale(roi_gray)
+        for (ex, ey, ew, eh) in eyes:
+            cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
+    return img
+
+def facecrop_default(img,face_cascade):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(
+        gray,
+        scaleFactor=1.3,
+        minNeighbors=5,
+        minSize=(30, 30),
+        flags=cv2.CASCADE_SCALE_IMAGE
+    )
+
+    #margin between face image
+    left = 10
+    right = 10
+    top = 2
+    bottom = 2
+
+    count = len(faces)
+    y = 0
+    h = 0
+    x = 0
+    w = 0
+
+    if count == 0:
+        return img
+    elif count <= 1:
+        for (x, y, w, h) in faces:
+            print
+            x, y, w, h
+            # cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        return img[y - top:y + h + bottom, x - left:x + w + right]
+    else:
+        x = 0
+        x1 = []
+        y1 = []
+        w1 = []
+        h1 = []
+        while x < count:
+            x1.append(faces[x][0])
+            y1.append(faces[x][1])
+            w1.append(faces[x][0] + faces[x][2])
+            h1.append(faces[x][1] + faces[x][3])
+            x = x + 1
+
+        x = min(x1)
+        y = min(y1)
+        w = max(w1)
+        h = max(h1)
+
+        return img[y - top:h + bottom, x - left: w + right]
