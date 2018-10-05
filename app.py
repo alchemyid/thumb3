@@ -8,6 +8,7 @@ from libs.Flip import flip
 from libs.Rotate import rotate
 from libs.Overlay import overlay
 from libs.Facecrop import facecrop
+from controllers.Thumbnail import thumbController
 
 class index(object):
     def on_get(self, req, resp):
@@ -58,5 +59,14 @@ class index(object):
             resp.body = buf
 
 
+
+
+route_check = AuthMiddleware(
+    exempt_routes=[
+                    '/'
+                  ]
+)
+
 app = falcon.API(middleware=[AuthMiddleware()])
 app.add_route('/', index())
+app.add_route('/thumb', thumbController())
