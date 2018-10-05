@@ -10,6 +10,7 @@ from libs.Overlay import overlay
 from libs.Facecrop import facecrop
 from controllers.Thumbnail import thumbController
 from controllers.Crop import cropController
+from controllers.Flip import flipController
 
 class index(object):
     def on_get(self, req, resp):
@@ -55,8 +56,8 @@ class index(object):
 
             resp.status = falcon.HTTP_200
             resp.content_type = ext
-            #resp.set_header("Expires", exp)
-            #resp.set_header("Cache-Control", "public, max-age=86400")
+            resp.set_header("Expires", exp)
+            resp.set_header("Cache-Control", "public, max-age=86400")
             resp.body = buf
 
 
@@ -72,3 +73,5 @@ app = falcon.API(middleware=[AuthMiddleware()])
 app.add_route('/', index())
 app.add_route('/thumb', thumbController())
 app.add_route('/cropping', cropController())
+app.add_route('/flip',flipController())
+
