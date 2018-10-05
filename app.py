@@ -12,6 +12,7 @@ from controllers.Thumbnail import thumbController
 from controllers.Crop import cropController
 from controllers.Flip import flipController
 from controllers.Rotate import rotateController
+from controllers.Overlay import overlayController
 
 class index(object):
     def on_get(self, req, resp):
@@ -76,4 +77,5 @@ app.add_route('/v1.0/thumb', thumbController())
 app.add_route('/v1.0/cropping', cropController())
 app.add_route('/v1.0/flip',flipController())
 app.add_route('/v1.0/rotate', rotateController())
+app.add_route('/v1.0/overlay', overlayController())
 
