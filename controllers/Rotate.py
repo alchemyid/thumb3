@@ -1,9 +1,9 @@
 import json
 import falcon
-from libs.Crop import crop
+from libs.Rotate import rotate
 from libs.GetImages import getimage
 
-class cropController(object):
+class rotateController(object):
     def on_post(self, req, resp):
         try:
             rawjson = req.stream.read()
@@ -24,10 +24,10 @@ class cropController(object):
                     h = None
                 else:
                     h = data['height']
-                if bool(data.get('crop')) is False:
-                    c = None
+                if bool(data.get('rotate')) is False:
+                    r = 0
                 else:
-                    c = data['crop']
+                    r = int(data['rotate'])
                 if bool(data.get('quality')) is False:
                     q = None
                 else:
@@ -36,7 +36,7 @@ class cropController(object):
                 #default get image to numpy and pillow
                 imgnumpy,imgpillow,ext,name = getimage(url)
 
-                buf, exp, ext = crop(imgnumpy, imgpillow, ext, name, w, h, c, q)
+                buf, exp, ext = rotate(imgnumpy, imgpillow, ext, name, w, h, r, q)
                 resp.status = falcon.HTTP_200
                 resp.content_type = ext
                 resp.set_header("Expires", exp)

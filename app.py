@@ -11,6 +11,7 @@ from libs.Facecrop import facecrop
 from controllers.Thumbnail import thumbController
 from controllers.Crop import cropController
 from controllers.Flip import flipController
+from controllers.Rotate import rotateController
 
 class index(object):
     def on_get(self, req, resp):
@@ -71,7 +72,8 @@ route_check = AuthMiddleware(
 
 app = falcon.API(middleware=[AuthMiddleware()])
 app.add_route('/', index())
-app.add_route('/thumb', thumbController())
-app.add_route('/cropping', cropController())
-app.add_route('/flip',flipController())
+app.add_route('/v1.0/thumb', thumbController())
+app.add_route('/v1.0/cropping', cropController())
+app.add_route('/v1.0/flip',flipController())
+app.add_route('/v1.0/rotate', rotateController())
 

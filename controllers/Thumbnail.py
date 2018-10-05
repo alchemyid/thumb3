@@ -46,7 +46,7 @@ class thumbController(object):
         except :
             data = {
                 "exec":False,
-                "message":"url image is mandatory!"
+                "message":"Something Error, Pleace check documentation!"
             }
             resp.status = falcon.HTTP_UNAUTHORIZED
             resp.body = json.dumps(data, sort_keys=True, indent=2, separators=(',', ': '))
