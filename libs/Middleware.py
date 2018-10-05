@@ -8,7 +8,8 @@ class AuthMiddleware(object):
     def process_resource(self, req, resp, resource, params):
         aclDomain = [
             'cdn.netcj.co.id',
-            'raw.githubusercontent.com'
+            'raw.githubusercontent.com',
+            'www.jcpportraits.com'
         ]
         parse = urlparse(req.get_param('url'))
         domain = '{uri.netloc}'.format(uri=parse)

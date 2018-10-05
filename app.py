@@ -13,6 +13,7 @@ from controllers.Crop import cropController
 from controllers.Flip import flipController
 from controllers.Rotate import rotateController
 from controllers.Overlay import overlayController
+from controllers.FaceCroping import facecropController
 
 class index(object):
     def on_get(self, req, resp):
@@ -78,4 +79,5 @@ app.add_route('/v1.0/cropping', cropController())
 app.add_route('/v1.0/flip',flipController())
 app.add_route('/v1.0/rotate', rotateController())
 app.add_route('/v1.0/overlay', overlayController())
+app.add_route('/v1.0/facecrop', facecropController())
 
