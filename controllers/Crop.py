@@ -1,9 +1,9 @@
 import json
 import falcon
+from libs.Crop import crop
 from libs.GetImages import getimage
-from libs.Thumbnail import thumbnail
 
-class thumbController(object):
+class cropController(object):
     def on_post(self, req, resp):
         try:
             rawjson = req.stream.read()
@@ -24,10 +24,10 @@ class thumbController(object):
                     h = None
                 else:
                     h = data['height']
-                if bool(data.get('alignment')) is False:
-                    a = None
+                if bool(data.get('crop')) is False:
+                    c = None
                 else:
-                    a = data['alignment']
+                    c = data['crop']
                 if bool(data.get('quality')) is False:
                     q = None
                 else:
@@ -36,7 +36,7 @@ class thumbController(object):
                 #default get image to numpy and pillow
                 imgnumpy,imgpillow,ext,name = getimage(url)
 
-                buf, exp, ext = thumbnail(imgnumpy, imgpillow,ext,name,w,h,a,q)
+                buf, exp, ext = crop(imgnumpy, imgpillow, ext, name, w, h, c, q)
                 resp.status = falcon.HTTP_200
                 resp.content_type = ext
                 resp.set_header("Expires", exp)
