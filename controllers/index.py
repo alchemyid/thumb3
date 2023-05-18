@@ -26,7 +26,7 @@ class index(object):
                     'support':'info@girirahayu.com'
             }
             resp.status = falcon.HTTP_200
-            resp.body = json.dumps(data, sort_keys=True, indent=2, separators=(',', ': '))
+            resp.context['response'] = data
         else:
             #default get image to numpy and pillow
             imgnumpy,imgpillow,ext,name = getimage(url)

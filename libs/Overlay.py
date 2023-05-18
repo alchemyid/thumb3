@@ -1,4 +1,4 @@
-from libs.ImageProcessing import resize_aspectratio_width_height,default_image,width_only,height_only,overlayimage
+from libs.imageProcessing import resize_aspectratio_width_height,default_image,width_only,height_only,overlayimage
 from libs.Helper import get_exif,getbuffer,getImageOverlay,read_config,contype
 from libs.GetImages import getimage
 import cv2

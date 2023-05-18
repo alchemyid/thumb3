@@ -1,5 +1,5 @@
 from libs.Helper import get_exif, contype, getbuffer
-from libs.ImageProcessing import default_image, flipimage,width_only,height_only,resize_aspectratio_width_height
+from libs.imageProcessing import default_image, flipimage,width_only,height_only,resize_aspectratio_width_height
 
 def flip(imgnumpy,imgpillow,ext,name,w,h,f,q):
 

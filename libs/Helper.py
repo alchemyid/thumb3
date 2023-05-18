@@ -6,8 +6,19 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 import urllib
 import numpy as np
+import decimal
 
 
+
+def jsonSerializer(obj):
+    if isinstance(obj, datetime.datetime):
+        return str(obj)
+    elif isinstance(obj, decimal.Decimal):
+        return str(obj)
+
+    raise TypeError(
+        'Cannot serialize {!r} (type {})'.format(obj, type(obj)))
+    
 def flat(*nums):
     return tuple(int(round(n)) for n in nums)
 
@@ -22,6 +33,7 @@ def read_config(json_node, string):
 
 def strtodm5(s, encoding='utf-8'):
     return md5(s.encode(encoding)).hexdigest()
+
 
 def contype(name):
     #get extention

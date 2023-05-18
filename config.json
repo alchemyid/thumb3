@@ -7,5 +7,8 @@
     "Overlay_Image_Width":100,
     "Overlay_Image_Height":100,
     "Overlay_Text":"www.girirahayu.id"
-  }
+  },
+  "domain_acl": [
+    "xapiens.id"
+  ]
 }

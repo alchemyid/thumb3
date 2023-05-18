@@ -1,5 +1,5 @@
 from libs.Helper import get_exif, contype, getbuffer
-from libs.ImageProcessing import crop_width_height
+from libs.imageProcessing import crop_width_height
 
 def crop(imgnumpy,imgpillow,ext,name,w,h,c,q):
     exif, imgrotate = get_exif(imgpillow)

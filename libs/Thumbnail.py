@@ -1,5 +1,5 @@
 from libs.Helper import get_exif, contype, getbuffer
-from libs.ImageProcessing import resize_aspectratio_width_height, default_image, width_only,height_only, \
+from libs.imageProcessing import resize_aspectratio_width_height, default_image, width_only,height_only, \
     resize_aspectratio_width_height_a
 
 def thumbnail(imgnumpy,imgpillow,ext,name,w,h,a,q):

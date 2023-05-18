@@ -1,5 +1,5 @@
 from libs.Helper import get_exif,getbuffer,contype
-from libs.ImageProcessing import default_image, facecrop_debug, facecrop_default, width_only, height_only, resize_aspectratio_width_height
+from libs.imageProcessing import default_image, facecrop_debug, facecrop_default, width_only, height_only, resize_aspectratio_width_height
 import cv2
 from PIL import Image
 import numpy as np

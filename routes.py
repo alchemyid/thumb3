@@ -1,5 +1,5 @@
 import falcon
-from libs.Middleware import AuthMiddleware
+from libs.Middleware import AuthMiddleware,JSONTranslator
 from controllers.Thumbnail import thumbController
 from controllers.Crop import cropController
 from controllers.Flip import flipController
@@ -13,15 +13,17 @@ def handle_404(req, resp):
     resp.status = falcon.HTTP_404
     resp.body = 'Not found'
 
-def route() -> falcon.API:
+def routes() -> falcon.App:
 
     route_check = AuthMiddleware(
-    exempt_routes=[
-                    '/'
-                  ]
+        exempt_routes=['/']
     )
 
-    api = falcon.API(middleware=[route_check])
+    api = falcon.App(middleware=[
+        route_check,
+        JSONTranslator()
+        ]
+    )
 
     #default index page
     api.add_route('/', index())
