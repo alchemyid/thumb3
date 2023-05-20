@@ -13,7 +13,6 @@ Thumb with aspect ratio
 Crop with parameter location
 Flip
 Rotate
-o
 Face Crop
 
 ### macos requirement

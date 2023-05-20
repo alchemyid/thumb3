@@ -9,6 +9,7 @@
     "Overlay_Text":"www.girirahayu.id"
   },
   "domain_acl": [
-    "liquipedia.net"
+    "liquipedia.net",
+    "localhost:8000"
   ]
 }
